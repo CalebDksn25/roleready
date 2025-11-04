@@ -264,7 +264,7 @@ export default function Page() {
     try {
       setProgress(40);
       setProgressMessage("Evaluating response quality...");
-      const r = await fetch("/api/ans_feedback", {
+      const r = await fetch("/api/ans-feedback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({}),
@@ -608,7 +608,7 @@ export default function Page() {
                 <div className="text-4xl font-bold text-white">
                   {answerFeedback.score ?? "N/A"}
                 </div>
-                <div className="text-xs text-gray-400 mt-1">out of 10</div>
+                <div className="text-xs text-gray-400 mt-1">out of 5</div>
               </div>
 
               {/* Feedback Card */}
