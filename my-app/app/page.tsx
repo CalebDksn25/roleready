@@ -376,7 +376,7 @@ export default function Page() {
           <button
             className="px-8 py-4 glass bg-white bg-opacity-20 hover:bg-opacity-30 text-white border border-white border-opacity-30 hover:border-opacity-50 font-semibold rounded-xl shadow-lg transition-all duration-200 text-lg"
             type="button"
-            onClick={() => router.push("/interview")}>
+            onClick={() => router.push("/job-interview")}>
             Begin Interview Setup
           </button>
         </div>
@@ -388,290 +388,23 @@ export default function Page() {
           <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent"></div>
         </div>
 
-        {/* Progress Bar */}
-        <ProgressBar progress={progress} message={progressMessage} />
-
-        {/* Upload Section */}
-        <div className="glass glass-hover p-8 space-y-6">
+        {/* Quick Start Mock Interview Section */}
+        <div className="glass glass-hover p-8 space-y-6 text-center">
           <div className="space-y-2">
-            <h2 className="text-2xl font-semibold text-white">
-              Step 1: Upload Resume
+            <h2 className="text-3xl font-semibold text-white">
+              Want to practice your interview skills? Click here to get started
             </h2>
-            <p className="text-gray-400 text-sm">
-              Upload your resume to get started
+            <p className="text-gray-400">
+              Get personalized interview questions based on your resume
             </p>
           </div>
-
-          <form onSubmit={uploadSubmit} className="space-y-4">
-            <div className="space-y-4">
-              <label className="block">
-                <div className="glass p-4 rounded-xl cursor-pointer hover:bg-opacity-80 transition-all duration-200 border-2 border-dashed border-gray-600 hover:border-blue-500">
-                  <input
-                    type="file"
-                    className="hidden"
-                    name="resume"
-                    accept="application/pdf"
-                    required
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) setFileName(file.name);
-                    }}
-                  />
-                  <div className="text-center">
-                    <div className="text-blue-400 text-sm font-medium mb-1">
-                      {fileName ? fileName : "Choose PDF file"}
-                    </div>
-                    <div className="text-gray-500 text-xs">PDF files only</div>
-                  </div>
-                </div>
-              </label>
-
-              <button
-                className="w-full px-6 py-4 glass bg-white bg-opacity-20 hover:bg-opacity-30 text-white border border-white border-opacity-30 hover:border-opacity-50 font-semibold rounded-xl shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-                type="submit"
-                disabled={uploadStatus === "uploading"}>
-                {uploadStatus === "uploading"
-                  ? "Uploading..."
-                  : uploadStatus === "success"
-                  ? "✓ Uploaded"
-                  : "Upload Resume"}
-              </button>
-            </div>
-          </form>
-
-          {uploadStatus === "success" && (
-            <div className="p-4 glass rounded-xl bg-green-500 bg-opacity-10 border border-green-500 border-opacity-30">
-              <p className="text-green-400 text-sm font-medium">{status}</p>
-            </div>
-          )}
-
-          {uploadStatus === "error" && (
-            <div className="p-4 glass rounded-xl bg-red-500 bg-opacity-10 border border-red-500 border-opacity-30">
-              <p className="text-red-400 text-sm font-medium">{status}</p>
-            </div>
-          )}
-        </div>
-
-        {/* Start Interview Section */}
-        <div className="flex items-center justify-center">
           <button
-            className="px-8 py-4 glass bg-white bg-opacity-20 hover:bg-opacity-30 text-white border border-white border-opacity-30 hover:border-opacity-50 font-semibold rounded-xl shadow-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-lg"
+            className="px-8 py-4 glass bg-white bg-opacity-20 hover:bg-opacity-30 text-white border border-white border-opacity-30 hover:border-opacity-50 font-semibold rounded-xl shadow-lg transition-all duration-200 text-lg"
             type="button"
-            onClick={startInterview}
-            disabled={
-              uploadStatus !== "success" || interviewStatusType === "loading"
-            }>
-            {interviewStatusType === "loading"
-              ? "Starting Interview..."
-              : interviewStatusType === "success"
-              ? "✓ Interview Ready"
-              : "Start Interview"}
+            onClick={() => router.push("/mock-interview")}>
+            Begin Mock Interview
           </button>
         </div>
-
-        {/* Interview Questions Section */}
-        {interviewQuestions ? (
-          <div className="glass glass-hover p-8 space-y-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-2xl font-semibold text-white mb-2">
-                  Interview Session
-                </h2>
-                <p className="text-gray-400 text-sm">
-                  Question {currentQuestion + 1} of {interviewQuestions.length}
-                </p>
-              </div>
-              <div
-                className="h-2 bg-gray-800 rounded-full overflow-hidden"
-                style={{ width: "200px" }}>
-                <div
-                  className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300"
-                  style={{
-                    width: `${
-                      ((currentQuestion + 1) / interviewQuestions.length) * 100
-                    }%`,
-                  }}
-                />
-              </div>
-            </div>
-
-            <div className="glass p-6 rounded-xl bg-blue-500 bg-opacity-5 border border-blue-500 border-opacity-20">
-              <p className="text-lg text-white leading-relaxed">
-                {interviewQuestions[currentQuestion] ?? ""}
-              </p>
-            </div>
-
-            {/* TTS Audio Player */}
-            {audioSrc ? (
-              <div className="glass p-4 rounded-xl">
-                <audio
-                  src={audioSrc}
-                  controls
-                  autoPlay
-                  onPlay={() => setIsTtsPlaying(true)}
-                  onEnded={() => setIsTtsPlaying(false)}
-                  className="w-full"
-                />
-              </div>
-            ) : null}
-
-            {/* Recording Controls */}
-            <div className="flex items-center gap-4 flex-wrap">
-              <button
-                className="px-6 py-3 glass glass-hover text-white rounded-xl disabled:opacity-50 disabled:cursor-not-allowed font-medium"
-                type="button"
-                onClick={previousQuestion}
-                disabled={currentQuestion === 0}>
-                ← Previous
-              </button>
-
-              {!recording ? (
-                <button
-                  className="px-8 py-3 glass bg-white bg-opacity-20 hover:bg-opacity-30 text-white border border-white border-opacity-30 hover:border-opacity-50 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed font-semibold shadow-lg transition-all duration-200 flex items-center gap-2"
-                  type="button"
-                  onClick={startRecording}
-                  disabled={isTtsPlaying}>
-                  <span className="w-3 h-3 bg-white rounded-full"></span>
-                  Start Recording
-                </button>
-              ) : (
-                <button
-                  className="px-8 py-3 glass bg-white bg-opacity-20 hover:bg-opacity-30 text-white border border-white border-opacity-30 hover:border-opacity-50 rounded-xl font-semibold shadow-lg transition-all duration-200 flex items-center gap-2 animate-pulse"
-                  type="button"
-                  onClick={() => {
-                    mediaRecorderRef.current?.stop();
-                    setRecording(false);
-                    setHasAnswer(true);
-                  }}>
-                  <span className="w-3 h-3 bg-white rounded-full"></span>
-                  Stop Recording
-                </button>
-              )}
-
-              <button
-                className="px-6 py-3 glass bg-white bg-opacity-20 hover:bg-opacity-30 text-white border border-white border-opacity-30 hover:border-opacity-50 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed font-semibold shadow-lg transition-all duration-200"
-                type="button"
-                onClick={nextQuestion}
-                disabled={
-                  currentQuestion === interviewQuestions.length - 1 ||
-                  isTtsPlaying ||
-                  recording ||
-                  !hasAnswer
-                }>
-                Next →
-              </button>
-            </div>
-
-            {error && (
-              <div className="p-4 glass rounded-xl bg-red-500 bg-opacity-10 border border-red-500 border-opacity-30">
-                <p className="text-red-400 text-sm">{error}</p>
-              </div>
-            )}
-
-            {interviewStatus && (
-              <div
-                className={`p-4 glass rounded-xl ${
-                  interviewStatusType === "success"
-                    ? "bg-green-500 bg-opacity-10 border border-green-500 border-opacity-30"
-                    : interviewStatusType === "error"
-                    ? "bg-red-500 bg-opacity-10 border border-red-500 border-opacity-30"
-                    : "bg-blue-500 bg-opacity-10 border border-blue-500 border-opacity-30"
-                }`}>
-                <p
-                  className={`text-sm font-medium ${
-                    interviewStatusType === "success"
-                      ? "text-green-400"
-                      : interviewStatusType === "error"
-                      ? "text-red-400"
-                      : "text-blue-400"
-                  }`}>
-                  {interviewStatus}
-                </p>
-              </div>
-            )}
-          </div>
-        ) : null}
-
-        {/* Answer Feedback Section */}
-        {answerFeedback ? (
-          <div className="glass glass-hover p-8 space-y-6">
-            <h2 className="text-2xl font-semibold text-white">
-              Answer Feedback
-            </h2>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              {/* Score Card */}
-              <div className="glass p-6 rounded-xl bg-gradient-to-br from-blue-500 bg-opacity-10 border border-blue-500 border-opacity-30">
-                <div className="text-sm text-blue-400 font-medium mb-2">
-                  Score
-                </div>
-                <div className="text-4xl font-bold text-white">
-                  {answerFeedback.score ?? "N/A"}
-                </div>
-                <div className="text-xs text-gray-400 mt-1">out of 5</div>
-              </div>
-
-              {/* Feedback Card */}
-              <div className="glass p-6 rounded-xl bg-purple-500 bg-opacity-10 border border-purple-500 border-opacity-30">
-                <div className="text-sm text-purple-400 font-medium mb-2">
-                  Overall Feedback
-                </div>
-                <p className="text-sm text-gray-300 leading-relaxed">
-                  {answerFeedback.feedback ?? "No feedback provided."}
-                </p>
-              </div>
-            </div>
-
-            {/* Strengths and Weaknesses */}
-            <div className="grid md:grid-cols-2 gap-6">
-              <div className="glass p-6 rounded-xl bg-green-500 bg-opacity-10 border border-green-500 border-opacity-30">
-                <div className="text-sm text-green-400 font-semibold mb-3">
-                  Strengths
-                </div>
-                <ul className="space-y-2">
-                  {Array.isArray(answerFeedback.strengths) &&
-                  answerFeedback.strengths.length ? (
-                    answerFeedback.strengths.map((s: any, i: number) => (
-                      <li
-                        key={i}
-                        className="text-sm text-gray-300 flex items-start gap-2">
-                        <span className="text-green-400 mt-1">✓</span>
-                        <span>{s}</span>
-                      </li>
-                    ))
-                  ) : (
-                    <li className="text-sm text-gray-400">
-                      No strengths provided.
-                    </li>
-                  )}
-                </ul>
-              </div>
-
-              <div className="glass p-6 rounded-xl bg-red-500 bg-opacity-10 border border-red-500 border-opacity-30">
-                <div className="text-sm text-red-400 font-semibold mb-3">
-                  Areas for Improvement
-                </div>
-                <ul className="space-y-2">
-                  {Array.isArray(answerFeedback.weaknesses) &&
-                  answerFeedback.weaknesses.length ? (
-                    answerFeedback.weaknesses.map((w: any, i: number) => (
-                      <li
-                        key={i}
-                        className="text-sm text-gray-300 flex items-start gap-2">
-                        <span className="text-red-400 mt-1">•</span>
-                        <span>{w}</span>
-                      </li>
-                    ))
-                  ) : (
-                    <li className="text-sm text-gray-400">
-                      No weaknesses provided.
-                    </li>
-                  )}
-                </ul>
-              </div>
-            </div>
-          </div>
-        ) : null}
       </div>
     </main>
   );
