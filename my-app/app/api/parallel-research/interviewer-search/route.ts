@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
         objective,
         search_queries,
         processor: "base",
-        max_results: 5,
+        max_results: 10,
         max_chars_per_result: 6000,
       })
     );
