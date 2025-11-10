@@ -6,50 +6,59 @@ export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
   try {
-    // Extract the company from the request body and validate
+    //Extract the body from request and validate
     const body = await request.json().catch(() => ({}));
     const company = (body.company ?? body.company_name ?? "").trim();
     const role = (body.role ?? "").trim();
-    const jobURL = (body.jobURL ?? body.job_link ?? "").trim();
 
-    //Check to ensure we have fields
+    //Check to ensure we have company and role fields
     if (!company) {
       return NextResponse.json(
-        JSON.stringify({ error: "Missing the company to search for." }),
+        JSON.stringify({ error: "Missing company name from request." }),
         { status: 400 }
       );
     }
+    if (!role) {
+      return NextResponse.json(
+        JSON.stringify({ error: "Missing role to search for." })
+      );
+    }
+
+    //Check to ensure we have API key and create client
     if (!process.env.PARALLEL_API_KEY) {
       return NextResponse.json(
-        { error: "Missing PARALLEL_API_KEY on server" },
+        { error: "Missing Parallel API Key." },
         { status: 500 }
       );
     }
 
-    //Create client and ensure API Key exists
-    const client = new Parallel({ apiKey: process.env.PARALLEL_API_KEY! });
-    console.log("Comapny: ", company);
-    console.log("Role: ", role);
-    console.log("JobURL: ", jobURL);
+    const client = new Parallel({ apiKey: process.env.PARALLEL_API_KEY });
 
-    //Build the search query
-    const search_query = [
-      company || undefined,
-      role || undefined,
-      jobURL || undefined,
-      "site:glassdoor.com interview questions",
-      "site:reddit.com interview questions",
-    ].filter(Boolean) as string[];
+    //Build the search query to find technical leetcode questions given role
 
-    //Build the objective
-    const objective = [
-      "Find the most common interview questions for this company/role.",
-      company && `Company: ${company}`,
-      role && `Role: ${role}`,
-      jobURL && `Use this job posting URL if helpful: ${jobURL}`,
-    ]
-      .filter(Boolean)
-      .join("\n");
+    const search_queries = [
+      //Official LeetCode company problems & tags
+      `site:leetcode.com/company/${company.toLowerCase().replace(/\s+/g, "-")}`,
+
+      //LeetCode discussions mentioning interview questions
+      `site:leetcode.com/discuss "interview questions" ${company}`,
+
+      //GitHub repos with curated problem sets
+      `site:github.com ${company} leetcode interview questions`,
+
+      //Medium or blog posts summarizing company interview prep
+      `site:medium.com ${company} leetcode interview`,
+
+      //Reddit discussions (LeetCode & interview prep)
+      `site:reddit.com ${company} leetcode interview questions`,
+    ];
+
+    const objective = `
+    Find LeetCode-style interview questions asked by ${company}.
+    Prefer official LeetCode company pages, discussion threads, and GitHub repositories.
+    Return 5–10 representative questions with short summaries and URLs.
+    Exclude unrelated results.
+    `;
 
     //Add a timeout if search is taking > 15s
     const timeoutMs = body.timeout_ms ?? 15000;
@@ -61,11 +70,11 @@ export async function POST(request: NextRequest) {
         ),
       ]);
 
-    //Make the search request to Parallel
+    //Make a search request to parallel
     const res = await withTimeout(
       client.beta.search({
         objective: objective,
-        search_queries: search_query,
+        search_queries: search_queries,
         processor: "base",
         max_results: 10,
         max_chars_per_result: 6000,
@@ -85,7 +94,7 @@ export async function POST(request: NextRequest) {
       raw: r,
     }));
 
-    //Send the results back
+    //Return the response
     return NextResponse.json({ evidence });
   } catch (error) {
     console.error("Error calling Parallel Search API: ", error);
