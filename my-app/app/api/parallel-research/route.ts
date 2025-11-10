@@ -11,5 +11,8 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  //Generate the Parallel client
   const client = new Parallel({ apiKey });
+
+  
 }
