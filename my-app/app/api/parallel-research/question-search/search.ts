@@ -14,6 +14,7 @@ export async function questionSearch(input: questionSearchInput) {
 
   const company = (body.company ?? body.company_name ?? "").trim();
   const role = (body.role ?? "").trim();
+  const companyRole = `${company} ${role}`.trim();
 
   //Check to ensure we got data to search for
   if (!company) {
@@ -29,8 +30,7 @@ export async function questionSearch(input: questionSearchInput) {
   const client = new Parallel({ apiKey: process.env.PARALLEL_API_KEY });
 
   const search_queries = [
-    company || undefined,
-    role || undefined,
+    companyRole || undefined,
     "site:glassdoor.com interview questions",
     "site:reddit.com interview questions",
     "site:indeed.com interview questions",
