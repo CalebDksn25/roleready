@@ -1,0 +1,6 @@
+curl -X POST "http://localhost:3000/api/parallel-research/interviewer-search" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "interviewer_linkedin_url": "https://www.linkedin.com/in/kimiko-yamamoto/",
+    "timeout_ms": 12000
+  }'

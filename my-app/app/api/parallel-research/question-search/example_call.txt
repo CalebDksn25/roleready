@@ -3,4 +3,5 @@ curl -X POST "http://localhost:3000/api/parallel-research/question-search" \
   -d '{
     "company": "BAE Systems",
     "role": "Software Engineer Intern"
+    "interviewer_linkedin_urls" : "https://www.linkedin.com/in/kimiko-yamamoto/"
   }'

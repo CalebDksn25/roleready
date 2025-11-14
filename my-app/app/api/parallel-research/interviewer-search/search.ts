@@ -1,28 +1,25 @@
 import { parallelClient, parallelSearch } from "@/lib/parallelClient";
 
 type interviewerSearchInput = {
-  interviewer_linkedin_urls?: string[];
+  interviewer_linkedin_url?: string;
   timeout_ms?: number;
 };
 
 export async function interviewerSearch(input: interviewerSearchInput) {
-  //Get body input and ensure we have interviewer linkedin
-  const interviewerLinkedInURL = input.interviewer_linkedin_urls;
+  // Get body input and ensure we have interviewer linkedin
+  const interviewerLinkedInURL = input.interviewer_linkedin_url;
 
   if (!interviewerLinkedInURL) {
     throw new Error("Missing interviewer LinkedIn URL to search for.");
   }
 
-  //Declare Search Queries and objectives
-
-  const search_queries = interviewerLinkedInURL || "";
+  // Declare Search Queries and objectives
+  const search_queries = [interviewerLinkedInURL];
 
   const objective = [
     "Given the following LinkedIn URL, extract key professional, educational, and extracurricular information that can be used to create thoughtful, personalized interview questions tailored to their background, experiences, achievements, and interests.",
-    interviewerLinkedInURL && `LinkedIn URL: ${interviewerLinkedInURL}`,
-  ]
-    .filter(Boolean)
-    .join("\n");
+    `LinkedIn URL: ${interviewerLinkedInURL}`,
+  ].join("\n");
 
   const timeoutMs = input.timeout_ms ?? 15000;
   const withTimeout = <T>(p: Promise<T>) =>
@@ -33,10 +30,10 @@ export async function interviewerSearch(input: interviewerSearchInput) {
       ),
     ]);
 
-  //Call parallel client for response
+  // Call parallel client for response
   const res = await withTimeout(
     parallelSearch({
-      objective: objective,
+      objective,
       search_queries,
       processor: "base",
       max_results: 1,
@@ -44,16 +41,12 @@ export async function interviewerSearch(input: interviewerSearchInput) {
     })
   );
 
-  //Clean result and return evidence
+  // Clean result and return evidence
   const evidence = (res?.results ?? []).map((r: any, i: number) => ({
-    id: r.id ?? `question-${i}`,
-    type: "question",
-    title: r.title ?? r.source ?? "Interview Question Source",
+    id: r.id ?? `person-${i}`,
+    type: "LinkedIn User",
+    title: r.title ?? r.source ?? "LinkedIn Profile",
     url: r.url ?? r.link ?? null,
-    snippet:
-      r.snippet ??
-      r.summary ??
-      (typeof r.text === "string" ? r.text.slice(0, 280) : null),
     raw: r,
   }));
 
