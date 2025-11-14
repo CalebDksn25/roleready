@@ -1,46 +1,48 @@
-export interface ParallelRequest {
-  preset?: "interview" | "company" | string;
-  prompt?: string;
-  resume_text?: string;
-  job_description?: string;
-  role?: string;
-  company_name?: string;
-  domain?: string;
-  lookback_days?: number;
-  max_cost_usd?: number;
+// lib/parallelClient.ts
+import { Parallel } from "parallel-web";
+
+if (!process.env.PARALLEL_API_KEY) {
+  throw new Error("Missing PARALLEL_API_KEY environment variable");
+}
+
+// Singleton client instance
+export const parallelClient = new Parallel({
+  apiKey: process.env.PARALLEL_API_KEY,
+});
+
+// Optional: helper for search
+export async function parallelSearch(options: {
+  objective: string;
+  search_queries: string[];
+  processor?: string;
+  max_results?: number;
+  max_chars_per_result?: number;
   timeout_ms?: number;
-  [key: string]: any; // allow flexibility
+}) {
+  const {
+    objective,
+    search_queries,
+    processor = "base",
+    max_results = 10,
+    max_chars_per_result = 6000,
+    timeout_ms = 15000,
+  } = options;
+
+  const withTimeout = <T>(p: Promise<T>) =>
+    Promise.race<T>([
+      p,
+      new Promise<T>((_, reject) =>
+        setTimeout(() => reject(new Error("timeout")), timeout_ms)
+      ),
+    ]);
+
+  return withTimeout(
+    parallelClient.beta.search({
+      objective,
+      search_queries,
+      processor: "base",
+      max_results,
+      max_chars_per_result,
+    })
+  );
 }
-
-export interface ParallelResponse {
-  output_text?: string;
-  [key: string]: any;
-}
-
-const PARALLEL_API_URL = "https://api.parallelai.xyz/v1/run";
-
-export const parallelClient = {
-  async run(payload: ParallelRequest): Promise<ParallelResponse> {
-    try {
-      const response = await fetch(PARALLEL_API_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.PARALLEL_API_KEY ?? ""}`,
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        const text = await response.text();
-        throw new Error(`Parallel API ${response.status}: ${text}`);
-      }
-
-      const data = await response.json();
-      return data;
-    } catch (err: any) {
-      console.error("ParallelClient Error:", err);
-      return { output_text: `Error: ${err.message}` };
-    }
-  },
-};

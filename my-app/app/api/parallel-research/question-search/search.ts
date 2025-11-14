@@ -1,4 +1,4 @@
-import { Parallel } from "parallel-web";
+import { parallelSearch } from "@/lib/parallelClient";
 
 type questionSearchInput = {
   company?: string;
@@ -23,11 +23,6 @@ export async function questionSearch(input: questionSearchInput) {
   if (!role) {
     throw new Error("Missing role to search data for.");
   }
-  if (!process.env.PARALLEL_API_KEY) {
-    throw new Error("Missing Parallel API key for search.");
-  }
-
-  const client = new Parallel({ apiKey: process.env.PARALLEL_API_KEY });
 
   const search_queries = [
     companyRole || undefined,
@@ -55,7 +50,7 @@ export async function questionSearch(input: questionSearchInput) {
     ]);
 
   const res = await withTimeout(
-    client.beta.search({
+    parallelSearch({
       objective: objective,
       search_queries,
       processor: "base",
@@ -75,6 +70,8 @@ export async function questionSearch(input: questionSearchInput) {
       (typeof r.text === "string" ? r.text.slice(0, 280) : null),
     raw: r,
   }));
+
+  console.log("Question Search API called");
 
   return { evidence };
 }

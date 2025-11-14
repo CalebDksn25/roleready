@@ -1,4 +1,4 @@
-import { Parallel } from "parallel-web";
+import { parallelSearch } from "@/lib/parallelClient";
 
 type companySearchInput = {
   company?: string;
@@ -23,8 +23,6 @@ export async function companySearch(input: companySearchInput) {
     throw new Error("Missing Parallel API key for search.");
   }
 
-  const client = new Parallel({ apiKey: process.env.PARALLEL_API_KEY });
-
   const search_queries = [company || undefined].filter(Boolean) as string[];
 
   const objective = [
@@ -45,7 +43,7 @@ export async function companySearch(input: companySearchInput) {
     ]);
 
   const res = await withTimeout(
-    client.beta.search({
+    parallelSearch({
       objective: objective,
       search_queries,
       processor: "base",
@@ -65,6 +63,8 @@ export async function companySearch(input: companySearchInput) {
       (typeof r.text === "string" ? r.text.slice(0, 280) : null),
     raw: r,
   }));
+
+  console.log("Company Search API called");
 
   return { evidence };
 }
