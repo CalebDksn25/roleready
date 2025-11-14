@@ -1,116 +1,146 @@
 {
   "summary": {
     "what_to_expect": {
-      "summary": "The interview process for a software engineering position at this company typically involves multiple rounds focusing on technical skills, problem-solving abilities, and cultural fit.",
+      "summary": "BAE Systems interviews for technical roles often involve both technical and behavioral questions, with a focus on assessing technical skills, problem-solving ability, and cultural fit.",
       "rounds": [
-        "Initial phone screen with HR",
-        "Technical interview with coding challenges",
-        "System design interview",
-        "Behavioral interview with team members",
-        "Final interview with hiring manager"
+        "Phone screening",
+        "Technical interview",
+        "Behavioral interview"
       ],
       "topic_weights": [
-        { "technical_skills": 0.4 },
-        { "problem_solving": 0.3 },
-        { "cultural_fit": 0.2 },
-        { "communication": 0.1 }
+        { "topic": "Technical skills", "weight": 50 },
+        { "topic": "Behavioral fit", "weight": 30 },
+        { "topic": "Problem-solving", "weight": 20 }
       ],
-      "timeline_hint": "The interview process usually takes about 4-6 weeks from initial contact to final decision.",
-      "difficulty": "moderate to high",
+      "timeline_hint": "The interview process can take several weeks, with feedback typically provided within a month.",
+      "difficulty": "Moderate",
       "confidence": 0.7,
-      "source_ids": ["evidence1", "evidence3"]
+      "source_ids": ["question-0", "question-1", "question-4"]
     },
     "top_questions": [
       {
-        "question": "Describe a challenging technical problem you solved.",
+        "question": "What is a CI/CD pipeline?",
         "category": "Technical",
-        "rationale": "Assesses problem-solving skills and technical expertise.",
+        "rationale": "CI/CD pipelines are crucial in modern software engineering for automation and efficiency.",
         "how_to_prepare": [
-          "Review past projects",
-          "Practice explaining solutions clearly"
+          "Review DevOps practices",
+          "Understand CI/CD tools",
+          "Explore case studies on pipeline implementation"
         ],
-        "predicted_difficulty": "high",
+        "predicted_difficulty": "Moderate",
         "evaluation_criteria": [
-          "Complexity of the problem",
-          "Approach to solving it",
-          "Outcome"
+          "Understanding of DevOps",
+          "Familiarity with tools",
+          "Application of CI/CD"
         ],
-        "source_ids": ["evidence2"]
+        "source_ids": ["question-1"]
       },
       {
-        "question": "How do you prioritize tasks when working on multiple projects?",
-        "category": "Behavioral",
-        "rationale": "Evaluates time management and organizational skills.",
-        "how_to_prepare": [
-          "Reflect on past experiences",
-          "Develop a clear strategy"
-        ],
-        "predicted_difficulty": "medium",
-        "evaluation_criteria": [
-          "Clarity of thought",
-          "Effectiveness of prioritization"
-        ],
-        "source_ids": ["evidence4"]
-      },
-      {
-        "question": "Explain the concept of microservices architecture.",
+        "question": "Explain the difference between stack and heap memory.",
         "category": "Technical",
-        "rationale": "Tests understanding of modern software architectures.",
+        "rationale": "Memory management is a fundamental concept in software development.",
         "how_to_prepare": [
-          "Study microservices principles",
-          "Review relevant projects"
+          "Study memory allocation",
+          "Practice coding exercises related to memory use",
+          "Understand language-specific implementations"
         ],
-        "predicted_difficulty": "medium",
+        "predicted_difficulty": "Moderate",
         "evaluation_criteria": [
-          "Understanding of concepts",
-          "Ability to apply knowledge"
+          "Clarity of explanation",
+          "Depth of understanding",
+          "Ability to apply in coding scenarios"
         ],
-        "source_ids": ["evidence5"]
+        "source_ids": ["question-9"]
       },
       {
-        "question": "How would you handle a disagreement with a team member?",
+        "question": "Describe a time when you demonstrated creativity in solving a problem.",
         "category": "Behavioral",
-        "rationale": "Assesses conflict resolution and teamwork skills.",
+        "rationale": "Creativity is critical for innovation and solving complex challenges in technical environments.",
         "how_to_prepare": [
-          "Think of past conflicts",
-          "Prepare examples of resolution"
+          "Prepare STAR method responses",
+          "Reflect on past projects",
+          "Demonstrate outcomes"
         ],
-        "predicted_difficulty": "medium",
+        "predicted_difficulty": "Easy",
         "evaluation_criteria": [
-          "Approach to conflict",
-          "Outcome of the situation"
+          "Use of STAR technique",
+          "Impact of creative solution",
+          "Ability to articulate process"
         ],
-        "source_ids": ["evidence6"]
+        "source_ids": ["question-4"]
       },
       {
-        "question": "What motivates you to work in software engineering?",
-        "category": "General",
-        "rationale": "Explores personal drive and passion for the field.",
+        "question": "How would you explain abstract classes and override operators in Java?",
+        "category": "Technical",
+        "rationale": "Understanding of object-oriented programming concepts is essential for software engineers.",
         "how_to_prepare": [
-          "Identify personal motivations",
-          "Articulate career goals"
+          "Review Java OOP concepts",
+          "Practice coding examples",
+          "Compare with other languages"
         ],
-        "predicted_difficulty": "low",
-        "evaluation_criteria": [
-          "Clarity of motivation",
-          "Alignment with company values"
+        "predicted_difficulty": "Moderate",
+        "evaluation_criteria": ["Correctness", "Clarity", "Practical examples"],
+        "source_ids": ["question-1"]
+      },
+      {
+        "question": "Share an example of how you've utilized STAR interviewing techniques.",
+        "category": "Behavioral",
+        "rationale": "This approach helps in evaluating a candidate’s experience and decision-making skills.",
+        "how_to_prepare": [
+          "Develop several STAR stories",
+          "Match examples with job requirements",
+          "Practice clear storytelling"
         ],
-        "source_ids": ["evidence7"]
+        "predicted_difficulty": "Easy",
+        "evaluation_criteria": ["Clarity", "Relevance", "Impact"],
+        "source_ids": ["question-4"]
       }
     ],
     "company_insights_out": {
-      "one_liner": "A leading tech company specializing in innovative software solutions.",
-      "products": ["Cloud-based platforms", "AI-driven analytics tools"],
-      "tech_stack": ["Java", "Python", "AWS", "Docker"],
-      "recent_news_or_ships": [
-        "Launched a new AI product",
-        "Expanded cloud services"
+      "one_liner": "BAE Systems is a leading defense, aerospace, and security company with a focus on innovation and national security.",
+      "products": [
+        "Defense systems",
+        "Aerospace technology",
+        "Security solutions"
       ],
-      "culture_themes": ["Innovation", "Collaboration", "Diversity"],
-      "role_specific_context": "Focuses on developing scalable cloud solutions and modern distributed systems.",
-      "reading_list": [],
-      "confidence": 0.7,
-      "source_ids": []
+      "tech_stack": ["Java", "C++", "Python", "CI/CD tools"],
+      "recent_news_or_ships": ["No recent specific news available"],
+      "culture_themes": [
+        "Collaboration",
+        "Innovation",
+        "Supportive environment"
+      ],
+      "role_specific_context": "Roles at BAE Systems often involve working on mission-critical projects with advanced technology.",
+      "reading_list": [
+        {
+          "title": "Our Culture",
+          "url": "https://jobs.baesystems.com/global/en/ourculture",
+          "source_id": "question-0"
+        },
+        {
+          "title": "Our Mission",
+          "url": "https://jobs.baesystems.com/global/en/our-mission",
+          "source_id": "question-6"
+        }
+      ],
+      "confidence": 0.8,
+      "source_ids": ["question-0", "question-4", "question-6"]
+    },
+    "questions_for_interviewer": {
+      "summary": "Engage the interviewer to gain insights into the company's values and team dynamics.",
+      "items": [
+        {
+          "question": "Can you describe the team culture at BAE Systems?",
+          "why_it_matters": "Understanding team dynamics can inform how you may fit into the company.",
+          "suggested_follow_ups": [
+            "How does the team promote innovation?",
+            "What are some recent team achievements?"
+          ],
+          "personalization": "Direct this question to understand how values such as creativity and collaboration are manifested in daily work.",
+          "source_ids": ["person-0"]
+        }
+      ],
+      "confidence": 0.3
     }
   }
 }
