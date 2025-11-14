@@ -1,0 +1,6 @@
+curl -X POST "http://localhost:3000/api/parallel-research/company-search" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "company": "BAE Systems",
+    "role": "Software Engineer Intern"
+  }'
