@@ -30,7 +30,7 @@ export default function InterviewPage() {
   const [jobLink, setJobLink] = useState("");
   const [jobDescription, setJobDescription] = useState("");
   const [companyName, setCompanyName] = useState("");
-  const [interviewerName, setInterviewerName] = useState("");
+  const [interviewerLinkedin, setinterviewerLinkedin] = useState("");
   const [resumeFile, setResumeFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState<string | null>(null);
   const [uploadStatus, setUploadStatus] = useState<
@@ -43,7 +43,7 @@ export default function InterviewPage() {
     jobLink?: string;
     jobDescription?: string;
     companyName?: string;
-    interviewerName?: string;
+    interviewerLinkedin?: string;
     resume?: string;
   }>({});
 
@@ -74,8 +74,8 @@ export default function InterviewPage() {
       }
     }
 
-    if (!interviewerName.trim()) {
-      newErrors.interviewerName = "Interviewer name is required";
+    if (!interviewerLinkedin.trim()) {
+      newErrors.interviewerLinkedin = "Interviewer name is required";
     }
 
     if (!resumeFile) {
@@ -110,7 +110,7 @@ export default function InterviewPage() {
         formData.append("companyName", companyName);
       }
 
-      formData.append("interviewerName", interviewerName);
+      formData.append("interviewerName", interviewerLinkedin);
       formData.append("jobInputType", jobInputType);
 
       setProgress(30);
@@ -137,7 +137,7 @@ export default function InterviewPage() {
           sessionStorage.setItem("jobDescription", jobDescription);
           sessionStorage.setItem("companyName", companyName);
         }
-        sessionStorage.setItem("interviewerName", interviewerName);
+        sessionStorage.setItem("interviewerName", interviewerLinkedin);
         sessionStorage.setItem("jobInputType", jobInputType);
 
         setProgress(100);
@@ -151,7 +151,7 @@ export default function InterviewPage() {
 
         // Redirect to main page after a short delay
         setTimeout(() => {
-          router.push("/");
+          router.push("/job-interview");
         }, 1500);
       } else {
         setProgress(0);
@@ -331,12 +331,12 @@ export default function InterviewPage() {
               )}
             </div>
 
-            {/* Interviewer Name */}
+            {/* Interviewer LinkedIn */}
             <div className="space-y-2">
               <label
                 htmlFor="interviewerName"
                 className="block text-lg font-semibold text-white">
-                Interviewer Name
+                Interviewer LinkedIn
                 <span className="text-red-400 ml-1">*</span>
               </label>
               <p className="text-sm text-gray-400">
@@ -344,20 +344,22 @@ export default function InterviewPage() {
                 Hiring Manager" or "John Smith, Engineering Team Lead")
               </p>
               <input
-                id="interviewerName"
+                id="interviewerLinkedin"
                 type="text"
-                value={interviewerName}
+                value={interviewerLinkedin}
                 onChange={(e) => {
-                  setInterviewerName(e.target.value);
-                  if (errors.interviewerName) {
-                    setErrors({ ...errors, interviewerName: undefined });
+                  setinterviewerLinkedin(e.target.value);
+                  if (errors.interviewerLinkedin) {
+                    setErrors({ ...errors, interviewerLinkedin: undefined });
                   }
                 }}
                 className="w-full px-4 py-3 glass rounded-xl border border-gray-700 bg-black bg-opacity-30 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
-                placeholder="Enter interviewer name and title..."
+                placeholder="Enter interviewer's LinkedIn"
               />
-              {errors.interviewerName && (
-                <p className="text-sm text-red-400">{errors.interviewerName}</p>
+              {errors.interviewerLinkedin && (
+                <p className="text-sm text-red-400">
+                  {errors.interviewerLinkedin}
+                </p>
               )}
             </div>
 
