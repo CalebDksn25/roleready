@@ -149,10 +149,10 @@ export default function InterviewPage() {
           }`
         );
 
-        // Redirect to main page after a short delay
+        // Redirect to prep page so it can call the parallel-research API
         setTimeout(() => {
-          router.push("/job-interview");
-        }, 1500);
+          router.push("/job-interview/prep");
+        }, 400);
       } else {
         setProgress(0);
         setUploadStatus("error");
